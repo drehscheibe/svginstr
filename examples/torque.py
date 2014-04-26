@@ -18,6 +18,13 @@ try:
 	a = Instrument("torque.svg", 512, 512, "Bo105 torquemeter; " + __version__).fg_size(384, 384)
 	a.angle = lambda x: 230.0 * (x - 60) / 120 - 90
 
+	#-- gradient for needle cap -----------------------------------------------------
+
+	cap = RadialGradient("50%", "50%", "80%", "0%", "0%")
+	cap.stop("0%", 60)
+	cap.stop("90%", 20)
+	cap.stop("100%", 5)
+
 	#-- face ------------------------------------------------------------------------
 
 	if a.region(-100, -100, 175, 175, name = "TEST").begin():
@@ -65,8 +72,9 @@ try:
 
 	#-- needle ----------------------------------------------------------------------
 
-	if True:
-		if 0:
+		separate_needle = False
+
+		if separate_needle:
 			a.translate(88, -12).begin()       # separate (for final rendering)
 			a.begin()
 		else:
@@ -90,13 +98,15 @@ try:
 		#tail.debug(a)
 		a.end()
 
-		# top cap
-		g = RadialGradient("50%", "50%", "80%", "0%", "0%")
-		g.stop("0%", 60)
-		g.stop("90%", 20)
-		g.stop("100%", 5)
-		a.gradient(g).disc(9)
-		a.end()
+		if not separate_needle:
+			a.gradient(cap).disc(9)
+
+	#-- needle cap ------------------------------------------------------------------
+
+	a.end()
+
+	if separate_needle:
+		a.gradient(cap).translate(88, 88).disc(9)
 
 
 	# generate animation XML file for FlightGear
