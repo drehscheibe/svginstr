@@ -75,7 +75,7 @@ can follow them, as they don't return a class reference.
 
 To get and build the latest source, do this:
 
-  $ git clone git://gitorious.org/svginstr/svginstr.git
+  $ git clone https://github.com/drehscheibe/svginstr.git
   $ make png
 
 
