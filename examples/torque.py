@@ -115,5 +115,5 @@ try:
 	xml.animation("Rneedle", "sim/model/bo105/torque-pct", [0, 60, 120])
 
 except Error as e:
-	print >>sys.stderr, "\033[31;1m%s\033[m\n" % e
+	print("\033[31;1m%s\033[m\n" % e, file=sys.stderr)
 

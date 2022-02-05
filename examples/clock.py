@@ -67,5 +67,5 @@ try:
 		a.end()
 
 except Error as e:
-	print >>sys.stderr, "\033[31;1m%s\033[m\n" % e
+	print("\033[31;1m%s\033[m\n" % e, file=sys.stderr)
 

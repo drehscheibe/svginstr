@@ -1,2 +1,2 @@
 clean:
-	rm -f svginstr.pyc
+	rm -rf __pycache__

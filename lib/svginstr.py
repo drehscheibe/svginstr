@@ -34,7 +34,7 @@ class Global:
 
 
 def set_global_attributes(**args):
-	for key, value in args.items():
+	for key, value in list(args.items()):
 		if value is None:
 			if key in Global.attributes:
 				del(Global.attributes[key])
@@ -103,7 +103,7 @@ class Matrix:
 		return cmp((self.a, self.b, self.c, self.d, self.e, self.f), \
 				(m.a, m.b, m.c, m.d, m.e, m.f))
 
-	def __nonzero__(self):
+	def __bool__(self):
 		return (self.a, self.b, self.c, self.d, self.e, self.f) != (1, 0, 0, 1, 0, 0)
 
 	def copy(self):
@@ -288,8 +288,8 @@ class Path:
 		return self.down(-dy)
 
 	def debug(self, instr):
-		print self.points
-		print self.lines
+		print(self.points)
+		print(self.lines)
 		for l in self.lines:
 			instr.write('<line x1="%s" y1="%s" x2="%s" y2="%s" stroke-width="%s" stroke="%s"/>' \
 					% (l[0], l[1], l[2], l[3], instr.unit * 0.5, 'white'))
@@ -360,7 +360,7 @@ class RadialGradient(Gradient):
 
 class Instrument:
 	def __init__(self, filename, w, h = None, title = None, **args):
-		self.basename = string.split(filename, '.')[0]
+		self.basename = ".".split(filename)[0]
 		self.indent = 0
 		self.x = 0
 		self.y = 0
@@ -450,7 +450,7 @@ class Instrument:
 		if self.trans:
 			t = self.trans[:]
 			t.reverse()
-			attr += ' transform="%s"' % string.join(t)
+			attr += ' transform="%s"' % "".join(t)
 
 		self.write('<g%s>' % attr)
 
@@ -487,7 +487,7 @@ class Instrument:
 		return s
 
 	def _map_args(self, dic, **args):
-		for k, v in args.items():
+		for k, v in list(args.items()):
 			if v != None:
 				dic[k] = v
 
@@ -519,7 +519,7 @@ class Instrument:
 	def _style(self):
 		""" return assembled style """
 		if self.styles:
-			return " style=\"%s\"" % string.join(self.styles, "; ")
+			return " style=\"%s\"" % "; ".join(self.styles)
 		else:
 			return ""
 
@@ -536,7 +536,7 @@ class Instrument:
 	def _trans(self):
 		""" return assembled transformation """
 		if self.trans:
-			return " transform=\"%s\"" % string.join(self.trans, " ")
+			return " transform=\"%s\"" % " ".join(self.trans)
 		else:
 			return ""
 
@@ -770,38 +770,38 @@ class FGPanel:
 		self.name = name
 		self.W = w
 		self.H = h
+		self.f = XML(self.name + "-panel.xml", Global.indent)
 
 	def add(self, name, matrix, x, y, w, h):
 		self.data.append((name or "NoName", matrix, x, y, w, h))
 
 	def __del__(self):
-		f = XML(self.name + "-panel.xml", Global.indent)
-		f.write('<?xml version="1.0"?>')
-		f.write()
-		f.write('<PropertyList>')
-		f.write('<name>%s</name>' % self.name)
-		f.write('<w-base>%s</w-base>' % self.W)
-		f.write('<h-base>%s</h-base>' % self.W)
-		f.write()
-		f.write('<layers>')
+		self.f.write('<?xml version="1.0"?>')
+		self.f.write()
+		self.f.write('<PropertyList>')
+		self.f.write('<name>%s</name>' % self.name)
+		self.f.write('<w-base>%s</w-base>' % self.W)
+		self.f.write('<h-base>%s</h-base>' % self.W)
+		self.f.write()
+		self.f.write('<layers>')
 		for i in self.data:
 			name, matrix, x, y, w, h = i
 			p1 = matrix.transform(x, y + h)
 			p2 = matrix.transform(x + w, y)
 			s = matrix.transform(w - 100, 100 - h)
-			f.write('<name>%s</name>' % name)
-			f.write('<layer>')
-			f.write('<w>%s</w>' % R(self.W * s[0]))
-			f.write('<h>%s</h>' % R(self.H * s[1]))
-			f.write('<texture>')
-			f.write('<x1>%s</x1>' % R(p1[0]))
-			f.write('<y1>%s</y1>' % R(p1[1]))
-			f.write('<x2>%s</x2>' % R(p2[0]))
-			f.write('<y2>%s</y2>' % R(p2[1]))
-			f.write('</texture>')
-			f.write('</layer>')
-		f.write('</layers>')
-		f.write('</PropertyList>')
+			self.f.write('<name>%s</name>' % name)
+			self.f.write('<layer>')
+			self.f.write('<w>%s</w>' % R(self.W * s[0]))
+			self.f.write('<h>%s</h>' % R(self.H * s[1]))
+			self.f.write('<texture>')
+			self.f.write('<x1>%s</x1>' % R(p1[0]))
+			self.f.write('<y1>%s</y1>' % R(p1[1]))
+			self.f.write('<x2>%s</x2>' % R(p2[0]))
+			self.f.write('<y2>%s</y2>' % R(p2[1]))
+			self.f.write('</texture>')
+			self.f.write('</layer>')
+		self.f.write('</layers>')
+		self.f.write('</PropertyList>')
 
 
 
