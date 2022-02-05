@@ -4,8 +4,8 @@ from svginstr import *
 import sys
 
 __author__ = "Melchior FRANZ < mfranz # aon : at >"
-__url__ = "http://gitorious.org/svginstr/"
-__version__ = "0.2"
+__url__ = "http://github.com/drehscheibe/svginstr/"
+__version__ = "0.3"
 __license__ = "GPL v2+"
 __doc__ = """
 """
