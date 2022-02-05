@@ -8,13 +8,13 @@ fi
 while getopts "d:w:h:" arg; do
 	case "$arg" in
 	d)
-		options="$options -d $OPTARG "
+		options+=" -d $OPTARG "
 		;;
 	w)
-		options="$options -w $OPTARG "
+		options+=" -w $OPTARG "
 		;;
 	h)
-		options="$options -h $OPTARG "
+		options+=" -h $OPTARG "
 		;;
 	\?)
 		echo "getoprs error: $arg"
@@ -33,4 +33,4 @@ outfile=${2:-$infile.png}
 infile+=.svg
 
 
-inkscape $options -e "$outfile" "$infile"
+inkscape $options --export-filename="$outfile" "$infile"

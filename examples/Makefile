@@ -28,7 +28,7 @@ show: $(PNGFILES)
 	@for i in $(PNGFILES); do (display "$$i"&); done  ## 'display' is part of ImageMagick
 
 clean:
-	rm -f *.svg *.xml *.png
+	rm -f *.svg *.xml *.png *.png~
 
 help:
 	@echo "targets: svg png check show clean help"
